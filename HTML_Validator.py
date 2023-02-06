@@ -11,16 +11,18 @@ def validate_html(html):
     >>> validate_html('<strong>example')
     False
     '''
-    _extract_tags_(html)
+    text = _extract_tags_(html)
     stack = []
     for symbol in text:
-        if symbol == '<':
+        if symbol in '<\\':
             stack.append(symbol)
         else:
             if len(stack) == 0:
                 return False
-            stack.pop()
-    if len(stack) == 0:
+            if (stack[-1] == '<' and symbol =='>') or \
+                (stack[-1] == '\\' and symbol == '\\'):
+                stack.pop()
+    if stack == '\\':
         return True
     else:
         return False
