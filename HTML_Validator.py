@@ -11,6 +11,19 @@ def validate_html(html):
     >>> validate_html('<strong>example')
     False
     '''
+    _extract_tags_(html)
+    stack = []
+    for symbol in text:
+        if symbol == '<':
+            stack.append(symbol)
+        else:
+            if len(stack) == 0:
+                return False
+            stack.pop()
+    if len(stack) == 0:
+        return True
+    else:
+        return False
 
     # HINT:
     # use the _extract_tags function below to generate a list of html tags without any extra text;
