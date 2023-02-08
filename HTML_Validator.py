@@ -13,16 +13,16 @@ def validate_html(html):
     False
     '''
 
-    index = 0
     tags = _extract_tags(html)
+
     if not tags:
         return False
 
     stack = []
     balanced = True
 
-    if len(tags) <= 0 and len(html) > 1:
-        return False
+    if len(html) = 0:
+        return True
 
     while index < len(tags):
         tag = tags[index]
