@@ -15,35 +15,36 @@ def validate_html(html):
 
     tags = _extract_tags(html)
 
+    if len(html) == 0:
+        return True
+
     if not tags:
         return False
 
     stack = []
     balanced = True
+    index = 0
 
-    if len(html) = 0:
-        return True
-
-    while index < len(tags):
+    while index < len(tags) and balanced:
         tag = tags[index]
-        taged = tag[1:-1]
+        tagname = tag[1:-1]
 
-        if '/' not in tag:
-            stack.append(taged)
+        if "/" not in tag:
+            stack.append(tagname)
         else:
             if not stack:
                 balanced = False
             else:
                 x = stack.pop()
-                if x == taged[1:]:
+                if not x == tagname[1:]:
                     balanced = False
+
         index += 1
 
     if balanced and not stack:
         return True
     else:
         return False
-
     # HINT:
     # use the _extract_tags function below to generate
     # list of html tags without any extra text;
