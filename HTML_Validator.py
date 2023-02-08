@@ -14,13 +14,11 @@ def validate_html(html):
     '''
 
     index = 0
-    
     tags = _extract_tags(html)
-    
     if not tags:
         return False
 
-    stack =[]
+    stack = []
     balanced = True
 
     if len(tags) <= 0 and len(html) > 1:
@@ -32,14 +30,13 @@ def validate_html(html):
 
         if '/' not in tag:
             stack.append(taged)
-        
         else:
             if not stack:
                 balanced = False
             else:
                 x = stack.pop()
                 if x == taged[1:]:
-                    balance = False
+                    balanced = False
         index += 1
 
     if balanced and not stack:
