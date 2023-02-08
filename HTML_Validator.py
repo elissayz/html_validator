@@ -1,4 +1,5 @@
 #!/bin/python3
+import re
 
 
 def validate_html(html):
@@ -11,37 +12,48 @@ def validate_html(html):
     >>> validate_html('<strong>example')
     False
     '''
-    text = _extract_tags_(html)
     stack = []
-    for symbol in text:
-        if symbol in '<\\':
-            stack.append(symbol)
-        else:
-            if len(stack) == 0:
-                return False
-            if (stack[-1] == '<' and symbol =='>') or \
-                (stack[-1] == '\\' and symbol == '\\'):
-                stack.pop()
-    if stack == '\\':
-        return True
-    else:
+    index = 0
+    tags = _extract_tags(html)
+
+    if len(tags) == 0:
         return False
 
+    while index < len(tags):
+        tag = tags[index]
+        if '/' not in tag:
+            stack.append(tag)
+        if '/' in tags:
+            x = stack.pop()
+            if x == tag[1:]:
+                stack.pop()
+            else:
+                return False
+    index += 1
+
     # HINT:
-    # use the _extract_tags function below to generate a list of html tags without any extra text;
-    # then process these html tags using the balanced parentheses algorithm from the class/book
-    # the main difference between your code and the code from class will be that you will have to keep track of not just the 3 types of parentheses,
+    # use the _extract_tags function below to generate
+    # list of html tags without any extra text;
+    # then process these html tags using the balanced
+    # parentheses algorithm from the class/book
+    # the main difference between your code and the cod
+    # from class will be that you will have to keep track
+    # of not just the 3 types of parentheses,
     # but arbitrary text located between the html tags
 
 
 def _extract_tags(html):
     '''
     This is a helper function for `validate_html`.
-    By convention in Python, helper functions that are not meant to be used directly by the user are prefixed with an underscore.
+    By convention in Python, helper functions that are
+    not meant to be used directly by the user are prefixed with an underscore.
 
-    This function returns a list of all the html tags contained in the input string,
+    This function returns a list of all the html tags contained
+    in the input string,
     stripping out all text not contained within angle brackets.
 
     >>> _extract_tags('Python <strong>rocks</strong>!')
     ['<strong>', '</strong>']
     '''
+    tags = re.findall(r'<[^>]+>', html)
+    return tags
